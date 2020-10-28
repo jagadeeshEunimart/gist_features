@@ -63,15 +63,19 @@ if __name__ == "__main__":
 	categories = []
 	for a,b,c in os.walk(base_path):
 		categories.append(a.split('/')[-1])
-	
+	print(categories)
+	categories = categories[1:]
 	for category in categories:
-		for a,b,c in os.walk(base_path+'/'+category):
+		for a,b,c in os.walk(base_path+category):
 			for image in c:
-				print(base_path+'/'+category+'/'+image)
-				input_path = base_path+'/'+category+'/'+image
-				file_list = data.get_inputfile(input_path)
-				gist_feature = _get_gist(param,file_list)
-				print(gist_feature.shape)
+				try:
+					print(base_path+'/'+category+'/'+image)
+					input_path = base_path+category+'/'+image
+					file_list = data.get_inputfile(input_path)
+					gist_feature = _get_gist(param,file_list)
+					print(gist_feature.shape)
+				except Exception as e:
+					print(e)
 	# gist_feature = gist_feature.reshape(-1,1)
 	# print(gist_feature.shape)
 
