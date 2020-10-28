@@ -56,12 +56,22 @@ def _get_gist(param,file_list):
 
 if __name__ == "__main__":
 
-	input_path = sys.argv[1]
-
 	data = Dataloader()
-	file_list = data.get_inputfile(input_path)
-	gist_feature = _get_gist(param,file_list)
-	print(gist_feature.shape)
+	# input_path = sys.argv[1]
+	base_path = '/home/jagadeesh_vanga_eunimart_com/Amazon_India/'
+
+	categories = []
+	for a,b,c in os.walk(base_path):
+		categories.append(a.split('/')[-1])
+	
+	for category in categories:
+		for a,b,c in os.walk(base_path+'/'+category):
+			for image in c:
+				print(base_path+'/'+category+'/'+image)
+				input_path = base_path+'/'+category+'/'+image
+				file_list = data.get_inputfile(input_path)
+				gist_feature = _get_gist(param,file_list)
+				print(gist_feature.shape)
 	# gist_feature = gist_feature.reshape(-1,1)
 	# print(gist_feature.shape)
 
