@@ -8,8 +8,9 @@ import pandas as pd
 import re
 import feather
 import os
+import pickle
 import multiprocessing as mp
-
+from annoy import AnnoyIndex
 
 param = {
         "orientationsPerScale":np.array([8,8]),
@@ -66,6 +67,8 @@ if __name__ == "__main__":
 	print(categories)
 	categories = categories[1:]
 	for category in categories:
+		stack = []
+		names = []
 		for a,b,c in os.walk(base_path+category):
 			for image in c:
 				try:
@@ -74,8 +77,14 @@ if __name__ == "__main__":
 					file_list = data.get_inputfile(input_path)
 					gist_feature = _get_gist(param,file_list)
 					print(gist_feature.shape)
+					stack.append(gist_feature)
+					names.append(image.split('.')[0])
+					# print(type(gist_feature))
 				except Exception as e:
 					print(e)
+		pickle.dump(stack,'{}_features.pkl'.format(category))
+		pickle.dump(stack,'{}_filenames.pkl'.format(category))
+
 	# gist_feature = gist_feature.reshape(-1,1)
 	# print(gist_feature.shape)
 
